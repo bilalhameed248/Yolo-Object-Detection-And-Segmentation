@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Object-Det-Dev-sky</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .image-preview {
+      width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Image Upload Process</h2>
+  
+  <!-- Image Upload -->
+  <div class="mb-4">
+    <form method = "POST" action="{% url 'upload_file' %}", enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="imageUpload">Upload an Image:</label><br>
+        {{ form }}
+        <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+    </form>
+  </div>
+
+  {% if output_file_path %}
+  <!-- Box to Show Images -->
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Detection</h5>
+          <img src="{% static 'uploaded_files/detected_image.jpg'  %}", alt="output_file_path" class="img-fluid">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Segmentation <button id="remove-img" class="btn btn-sm btn-primary float-md-right">Remove</button></h5> 
+          <img id="segmentation-img" src="{% static 'uploaded_files/outlined_image.png'  %}", alt="output_file_path" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+document.getElementById('remove-img').addEventListener('click', function() {
+  var img = document.getElementById('segmentation-img');
+  img.src = "{% static 'uploaded_files/filled_image.png' %}";
+});
+
+</script>
+</body>
+</html>
